@@ -2,6 +2,42 @@
 // Handles cart, navigation, animations, and shared UI
 
 // ============================================
+// CURRENCY
+// Catalog prices in products.js are authored in INR. The storefront shows
+// and totals everything in USD, converted at this fixed rate.
+// To reprice the whole site, change INR_PER_USD — nothing else.
+// ============================================
+const INR_PER_USD = 96;
+
+// All money math runs in whole US cents so line items always add up
+// exactly to the subtotal/total shown — no floating-point drift.
+function inrToCents(inr) {
+  return Math.round((inr * 100) / INR_PER_USD);
+}
+
+const USD_FORMAT = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+// cents → "$4.68"
+function formatPrice(cents) {
+  return USD_FORMAT.format(cents / 100);
+}
+
+function priceCents(p) { return inrToCents(p.price); }
+function mrpCents(p) { return p.mrp ? inrToCents(p.mrp) : 0; }
+
+// Store policies (authored in INR, charged in USD at the same rate)
+const FREE_SHIPPING_OVER_CENTS = inrToCents(999);
+const SHIPPING_FEE_CENTS = inrToCents(79);
+const COD_FEE_CENTS = inrToCents(49);
+
+// Static HTML can show a converted amount with <span data-price-inr="999"></span>
+function hydrateStaticPrices(root = document) {
+  root.querySelectorAll('[data-price-inr]').forEach(el => {
+    el.textContent = formatPrice(inrToCents(Number(el.dataset.priceInr)));
+  });
+}
+
+// ============================================
 // CART MANAGEMENT
 // ============================================
 const Cart = {
@@ -61,10 +97,11 @@ const Cart = {
     return this.get().reduce((sum, item) => sum + item.qty, 0);
   },
 
+  // All amounts below are in USD cents — render with formatPrice().
   getSubtotal() {
     return this.get().reduce((sum, item) => {
       const product = getProductById(item.id);
-      return sum + (product ? product.price * item.qty : 0);
+      return sum + (product ? priceCents(product) * item.qty : 0);
     }, 0);
   },
 
@@ -72,14 +109,14 @@ const Cart = {
     return this.get().reduce((sum, item) => {
       const product = getProductById(item.id);
       if (!product || !product.mrp) return sum;
-      return sum + ((product.mrp - product.price) * item.qty);
+      return sum + ((mrpCents(product) - priceCents(product)) * item.qty);
     }, 0);
   },
 
   getShipping() {
     const subtotal = this.getSubtotal();
     if (subtotal === 0) return 0;
-    return subtotal >= 999 ? 0 : 79;
+    return subtotal >= FREE_SHIPPING_OVER_CENTS ? 0 : SHIPPING_FEE_CENTS;
   },
 
   getTotal() {
@@ -166,22 +203,22 @@ function renderCartDrawer() {
           </div>
         </div>
         <div>
-          <div class="cart-item-price">₹${(p.price * item.qty).toLocaleString('en-IN')}</div>
+          <div class="cart-item-price">${formatPrice(priceCents(p) * item.qty)}</div>
           <a class="cart-item-remove" onclick="Cart.remove('${p.id}')">Remove</a>
         </div>
       </div>
     `;
   }).join('');
 
-  document.getElementById('cartSubtotal').textContent = '₹' + Cart.getSubtotal().toLocaleString('en-IN');
-  document.getElementById('cartShipping').textContent = Cart.getShipping() === 0 ? 'Free' : '₹' + Cart.getShipping();
-  document.getElementById('cartTotal').textContent = '₹' + Cart.getTotal().toLocaleString('en-IN');
+  document.getElementById('cartSubtotal').textContent = formatPrice(Cart.getSubtotal());
+  document.getElementById('cartShipping').textContent = Cart.getShipping() === 0 ? 'Free' : formatPrice(Cart.getShipping());
+  document.getElementById('cartTotal').textContent = formatPrice(Cart.getTotal());
   const savings = Cart.getMRPSavings();
   const savingsEl = document.getElementById('cartSavings');
   if (savingsEl) {
     if (savings > 0) {
       savingsEl.parentElement.style.display = 'flex';
-      savingsEl.textContent = '− ₹' + savings.toLocaleString('en-IN');
+      savingsEl.textContent = '− ' + formatPrice(savings);
     } else {
       savingsEl.parentElement.style.display = 'none';
     }
@@ -350,8 +387,8 @@ function renderProductCard(p) {
       <div class="product-card-title">${p.name}</div>
       <div class="product-card-region">${p.region}${p.unit ? ' · ' + p.unit : ''}</div>
       <div class="product-card-price">
-        <span class="price">₹${p.price.toLocaleString('en-IN')}</span>
-        ${p.mrp ? `<span class="price-mrp">₹${p.mrp.toLocaleString('en-IN')}</span>` : ''}
+        <span class="price">${formatPrice(priceCents(p))}</span>
+        ${p.mrp ? `<span class="price-mrp">${formatPrice(mrpCents(p))}</span>` : ''}
         ${discount ? `<span class="price-discount">−${discount}%</span>` : ''}
       </div>
     </a>
@@ -380,7 +417,7 @@ function injectNav(activePage) {
   return `
     <div class="top-banner">
       <div class="top-banner-track">
-        <span>FREE SHIPPING ON ORDERS ABOVE ₹999</span>
+        <span>FREE SHIPPING ON ORDERS ABOVE ${formatPrice(FREE_SHIPPING_OVER_CENTS)}</span>
         <span>·</span>
         <span>GI-AUTHENTICATED PRODUCTS</span>
         <span>·</span>
@@ -388,7 +425,7 @@ function injectNav(activePage) {
         <span>·</span>
         <span>SHIPS PAN INDIA</span>
         <span>·</span>
-        <span>FREE SHIPPING ON ORDERS ABOVE ₹999</span>
+        <span>FREE SHIPPING ON ORDERS ABOVE ${formatPrice(FREE_SHIPPING_OVER_CENTS)}</span>
         <span>·</span>
         <span>GI-AUTHENTICATED PRODUCTS</span>
         <span>·</span>
@@ -409,6 +446,7 @@ function injectNav(activePage) {
             <a href="/categories/" class="${activePage==='categories'?'active':''}">Categories</a>
             <a href="/states/" class="${activePage==='states'?'active':''}">By State</a>
             <a href="/about/" class="${activePage==='about'?'active':''}">Our Story</a>
+            <a href="/gi-story/" class="${activePage==='gi-story'?'active':''}">India's GI Story</a>
             <a href="/landing/" class="${activePage==='landing'?'active':''}">Take the Survey</a>
           </div>
           <div class="nav-actions">
@@ -438,6 +476,7 @@ function injectNav(activePage) {
       <a href="/categories/">Categories</a>
       <a href="/states/">By State</a>
       <a href="/about/">Our Story</a>
+      <a href="/gi-story/">India's GI Story</a>
       <a href="/landing/">Take the Survey</a>
       <a href="/cart/">Basket</a>
     </aside>
@@ -493,6 +532,7 @@ function injectFooter() {
             <h4>Company</h4>
             <ul>
               <li><a href="/about/">Our Story</a></li>
+              <li><a href="/gi-story/">India's GI Story</a></li>
               <li><a href="/about/#mission">Mission</a></li>
               <li><a href="/about/#farmers">Farmers</a></li>
               <li><a href="/about/#gi">What is GI?</a></li>
@@ -540,10 +580,10 @@ function injectCartDrawer() {
       </div>
       <div class="cart-items" id="cartItems"></div>
       <div class="cart-footer" id="cartFooter">
-        <div class="cart-totals"><span>Subtotal</span><span id="cartSubtotal">₹0</span></div>
-        <div class="cart-totals" style="color: var(--vermillion);"><span>You save</span><span id="cartSavings">₹0</span></div>
+        <div class="cart-totals"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
+        <div class="cart-totals" style="color: var(--vermillion);"><span>You save</span><span id="cartSavings">$0.00</span></div>
         <div class="cart-totals"><span>Shipping</span><span id="cartShipping">Free</span></div>
-        <div class="cart-totals grand"><span>Total</span><span id="cartTotal">₹0</span></div>
+        <div class="cart-totals grand"><span>Total</span><span id="cartTotal">$0.00</span></div>
         <div class="cart-actions">
           <a href="/cart/" class="btn btn-ghost btn-sm" style="flex:1;">View Basket</a>
           <a href="/checkout/" class="btn btn-primary btn-sm" style="flex:1;">Checkout</a>
@@ -610,6 +650,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (navMount) navMount.innerHTML = injectNav(activePage);
   if (footerMount) footerMount.innerHTML = injectFooter() + injectCartDrawer();
 
+  hydrateStaticPrices();
   Cart.updateUI();
   initNavScroll();
   initReveal();

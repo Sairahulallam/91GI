@@ -117,8 +117,8 @@
           </p>
 
           <div class="product-detail-price">
-            <span class="price">₹${product.price.toLocaleString('en-IN')}</span>
-            ${product.mrp ? `<span class="price-mrp">₹${product.mrp.toLocaleString('en-IN')}</span>` : ''}
+            <span class="price">${formatPrice(priceCents(product))}</span>
+            ${product.mrp ? `<span class="price-mrp">${formatPrice(mrpCents(product))}</span>` : ''}
             ${discount ? `<span class="price-discount">Save ${discount}%</span>` : ''}
           </div>
 
@@ -154,7 +154,7 @@
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
                 <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
               </svg>
-              Free shipping over ₹999
+              Free shipping over ${formatPrice(FREE_SHIPPING_OVER_CENTS)}
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--forest);">
