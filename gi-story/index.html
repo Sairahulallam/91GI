@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>India's GI Story | 91GI — Rooted in India. Respected Globally.</title>
+  <meta name="description" content="How India learned to protect the origin of its foods: from the GI Act of 1999 and Darjeeling Tea's first tag, to 800+ registered GIs today, and why a certificate only matters when it reaches the grower." />
+  <link rel="icon" type="image/png" href="/91GI_logo.png" />
+  <link rel="stylesheet" href="/assets/css/style.css" />
+  <style>
+    /* ---------- HERO ---------- */
+    .gis-hero {
+      padding: 96px 0 0;
+      text-align: center;
+      background: var(--cream-soft);
+      border-bottom: 1px solid var(--line);
+    }
+    .gis-hero h1 {
+      font-size: clamp(2.6rem, 6.4vw, 5.4rem);
+      line-height: 1.04;
+      margin: 18px 0 22px;
+      font-weight: 500;
+      letter-spacing: -0.025em;
+    }
+    .gis-hero h1 em {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--vermillion);
+    }
+    .gis-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--forest);
+      font-weight: 600;
+      padding: 8px 16px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      margin-bottom: 26px;
+    }
+    .gis-kicker svg { width: 14px; height: 14px; color: var(--vermillion); }
+    .gis-hero-lead {
+      font-size: 19px;
+      color: var(--mute);
+      max-width: 640px;
+      margin: 0 auto;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+    .gis-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 72px;
+      border-top: 1px solid var(--line);
+    }
+    .gis-stat {
+      padding: 40px 24px 44px;
+      border-right: 1px solid var(--line);
+    }
+    .gis-stat:last-child { border-right: none; }
+    .gis-stat-num {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 5vw, 4rem);
+      color: var(--vermillion);
+      line-height: 1;
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .gis-stat-label {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--mute);
+      line-height: 1.6;
+    }
+    @media (max-width: 640px) {
+      .gis-hero { padding-top: 64px; }
+      .gis-stats { grid-template-columns: 1fr; margin-top: 48px; }
+      .gis-stat { border-right: none; border-bottom: 1px solid var(--line); padding: 28px 8px; }
+      .gis-stat:last-child { border-bottom: none; }
+    }
+
+    /* ---------- REVIVAL ---------- */
+    .gis-subline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 24px;
+      color: var(--forest-soft);
+      margin: -6px 0 28px;
+      line-height: 1.4;
+    }
+
+    /* ---------- TIMELINE ---------- */
+    .gis-timeline {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 28px;
+      margin-top: 88px;
+      position: relative;
+    }
+    .gis-timeline::before {
+      content: '';
+      position: absolute;
+      top: 9px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--line-strong);
+    }
+    .gis-timeline li { position: relative; padding-top: 40px; }
+    .gis-timeline li::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 0;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--cream);
+      border: 2px solid var(--gold);
+    }
+    .gis-timeline li:last-child::before { background: var(--vermillion); border-color: var(--vermillion); }
+    .gis-tl-year {
+      font-family: var(--font-serif);
+      font-size: 30px;
+      color: var(--forest-deep);
+      line-height: 1;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .gis-tl-text { font-size: 14.5px; color: var(--mute); line-height: 1.6; }
+    @media (max-width: 1100px) {
+      .gis-timeline { grid-template-columns: repeat(3, 1fr); row-gap: 44px; }
+      .gis-timeline::before { display: none; }
+    }
+    @media (max-width: 640px) {
+      .gis-timeline { grid-template-columns: 1fr; gap: 0; margin-top: 56px; border-left: 1px solid var(--line-strong); margin-left: 6px; }
+      .gis-timeline li { padding: 0 0 32px 28px; }
+      .gis-timeline li:last-child { padding-bottom: 0; }
+      .gis-timeline li::before { left: -7px; top: 6px; }
+      .gis-tl-year { font-size: 26px; margin-bottom: 6px; }
+    }
+
+    /* ---------- LONG-FORM ARTICLE ---------- */
+    .gis-article-wrap { padding: 110px 0 120px; background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .gis-article { max-width: 740px; margin: 0 auto; padding: 0 32px; }
+    @media (max-width: 768px) { .gis-article { padding: 0 20px; } }
+    .gis-article-head { text-align: center; margin-bottom: 64px; }
+    .gis-article-head h2 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      margin: 16px 0 14px;
+      font-weight: 500;
+    }
+    .gis-article-head h2 em {
+      font-family: var(--font-display);
+      font-style: italic;
+      color: var(--vermillion);
+      font-weight: 400;
+    }
+    .gis-article-head p {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--mute);
+    }
+    .gis-article p {
+      font-size: 18px;
+      line-height: 1.85;
+      color: var(--ink);
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+    .gis-article .gis-dropcap::first-letter {
+      font-family: var(--font-serif);
+      float: left;
+      font-size: 4.6em;
+      line-height: 0.82;
+      padding: 8px 12px 0 0;
+      color: var(--vermillion);
+      font-weight: 500;
+    }
+    .gis-article h3 {
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      margin: 72px 0 22px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .gis-article h3::before {
+      content: '';
+      width: 36px;
+      height: 2px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+    .gis-pull {
+      margin: 48px 0;
+      padding: 6px 0 6px 30px;
+      border-left: 3px solid var(--vermillion);
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1.6rem, 3.4vw, 2.2rem);
+      line-height: 1.35;
+      color: var(--forest-deep);
+    }
+    .gis-figure { margin: 48px 0; }
+    .gis-figure img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      object-fit: cover;
+      object-position: center 55%;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+    }
+    .gis-figure figcaption {
+      margin-top: 14px;
+      font-size: 13.5px;
+      color: var(--mute);
+      text-align: center;
+      font-style: italic;
+    }
+    .gis-closing {
+      margin-top: 72px;
+      padding: 44px 40px;
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      text-align: center;
+    }
+    .gis-closing strong {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      line-height: 1.4;
+      color: var(--forest-deep);
+      font-weight: 500;
+    }
+    .gis-closing strong em {
+      font-family: var(--font-display);
+      font-style: italic;
+      color: var(--vermillion);
+      font-weight: 400;
+    }
+    @media (max-width: 640px) {
+      .gis-article-wrap { padding: 72px 0 80px; }
+      .gis-article p { font-size: 17px; }
+      .gis-pull { padding-left: 20px; margin: 36px 0; }
+      .gis-closing { padding: 32px 22px; }
+    }
+
+    /* ---------- IN OUR NAME ---------- */
+    .gis-name {
+      background: var(--forest-deep);
+      color: var(--cream);
+      padding: 110px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .gis-name::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 15% 20%, rgba(184, 137, 59, 0.18), transparent 55%),
+        radial-gradient(ellipse at 85% 85%, rgba(193, 39, 45, 0.16), transparent 55%);
+      pointer-events: none;
+    }
+    .gis-name .container-narrow { position: relative; }
+    .gis-name .eyebrow { color: var(--gold-soft); }
+    .gis-name-mark {
+      font-family: var(--font-serif);
+      font-size: clamp(4.4rem, 14vw, 10rem);
+      line-height: 1;
+      color: var(--cream);
+      margin: 24px 0 30px;
+      font-weight: 500;
+      letter-spacing: -0.03em;
+    }
+    .gis-name-mark span { color: var(--vermillion); padding: 0 0.12em; }
+    .gis-name-mark em {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--gold-soft);
+    }
+    .gis-name p {
+      font-size: 19px;
+      line-height: 1.75;
+      color: rgba(250, 246, 238, 0.78);
+      max-width: 620px;
+      margin: 0 auto;
+      font-weight: 300;
+    }
+
+    /* ---------- PROMISE ---------- */
+    .gis-promise { padding: 120px 0 100px; text-align: center; background: var(--cream); }
+    .gis-promise h2 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(3.4rem, 10vw, 7.5rem);
+      color: var(--forest-deep);
+      line-height: 1;
+      margin: 18px 0 26px;
+    }
+    .gis-promise-line {
+      font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+      color: var(--ink);
+      max-width: 640px;
+      margin: 0 auto 48px;
+      line-height: 1.6;
+    }
+    .gis-promise-line b { color: var(--vermillion); font-weight: 600; }
+    .gis-promise blockquote {
+      max-width: 700px;
+      margin: 0 auto;
+      padding-top: 40px;
+      border-top: 1px solid var(--line-strong);
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 2.8vw, 1.8rem);
+      line-height: 1.5;
+      color: var(--forest-soft);
+      font-style: italic;
+    }
+
+    /* ---------- MANDATE ---------- */
+    .gis-mandate { padding: 100px 0; background: var(--cream-soft); border-top: 1px solid var(--line); }
+    .gis-mandate-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .gis-mandate h2 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 500;
+      margin-top: 16px;
+    }
+    .gis-mandate h2 em {
+      font-family: var(--font-display);
+      font-style: italic;
+      color: var(--vermillion);
+      font-weight: 400;
+    }
+    .gis-mandate p {
+      font-size: 18px;
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 18px;
+    }
+    @media (max-width: 900px) {
+      .gis-mandate-grid { grid-template-columns: 1fr; gap: 28px; }
+    }
+
+    /* ---------- VALUES ---------- */
+    .gis-values-wrap { padding: 100px 0 110px; background: var(--cream); }
+    .gis-values {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    .gis-value {
+      padding: 34px 28px 36px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+    }
+    .gis-value:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+    .gis-value-num {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 40px;
+      color: var(--gold);
+      line-height: 1;
+      display: block;
+      margin-bottom: 22px;
+    }
+    .gis-value h3 { font-size: 21px; margin-bottom: 12px; font-weight: 500; }
+    .gis-value p { font-size: 15px; color: var(--mute); line-height: 1.7; font-weight: 300; }
+    @media (max-width: 1024px) { .gis-values { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .gis-values { grid-template-columns: 1fr; } }
+
+    /* ---------- CTA ---------- */
+    .gis-cta { padding: 110px 0 90px; text-align: center; background: var(--cream-soft); border-top: 1px solid var(--line); }
+    .gis-cta h2 { font-size: clamp(2rem, 5vw, 3.8rem); margin: 16px 0 22px; font-weight: 500; }
+    .gis-cta h2 em {
+      font-family: var(--font-display);
+      font-style: italic;
+      color: var(--vermillion);
+      font-weight: 400;
+    }
+    .gis-cta p { font-size: 18px; color: var(--mute); margin-bottom: 36px; font-weight: 300; }
+    .gis-cta-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .gis-cta .gis-sources {
+      margin: 64px 0 0;
+      font-size: 12.5px;
+      color: var(--mute);
+      line-height: 1.6;
+    }
+  </style>
+  <!-- Microsoft Clarity -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "x9d6ggo5fd");
+  </script>
+</head>
+<body data-page="gi-story">
+
+  <div id="navMount"></div>
+
+  <!-- HERO -->
+  <section class="gis-hero">
+    <div class="container">
+      <span class="eyebrow">India's GI Story · 1999 – Today</span>
+      <h1>From a certificate<br /><em>to a livelihood.</em></h1>
+      <div class="gis-kicker">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+        Origin, honoured
+      </div>
+      <p class="gis-hero-lead">India's Geographical Indication story is still being written in its villages, valleys and harvest seasons. This is how it began, where it stands today, and the part 91GI has chosen to play in it.</p>
+
+      <div class="gis-stats">
+        <div class="gis-stat">
+          <div class="gis-stat-num">1999</div>
+          <div class="gis-stat-label">India passes its<br />GI law</div>
+        </div>
+        <div class="gis-stat">
+          <div class="gis-stat-num">2004</div>
+          <div class="gis-stat-label">Darjeeling Tea becomes<br />India's first GI</div>
+        </div>
+        <div class="gis-stat">
+          <div class="gis-stat-num">800+</div>
+          <div class="gis-stat-label">Products registered<br />as GIs today</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE REVIVAL -->
+  <section class="about-section" id="revival" style="background: var(--cream);">
+    <div class="container">
+      <div class="about-grid">
+        <div class="reveal">
+          <span class="eyebrow">The Revival</span>
+          <h2>Reclaiming <em>our own history.</em></h2>
+          <p class="gis-subline">Honouring where we come from. Deciding where we go next.</p>
+          <p>In the 1990s, India learned a hard lesson. A US patent was granted for using turmeric to heal wounds, something every Indian grandmother already knew. A European patent claimed a fungicide drawn from the neem tree. A US company patented rice lines bred from basmati.</p>
+          <p>India challenged each one, and the turmeric and neem patents were struck down. But the message was clear: knowledge without a legal name can be claimed by whoever files the paperwork first.</p>
+          <p>Together with India's commitments under the WTO's TRIPS agreement, those fights led Parliament to pass the Geographical Indications of Goods (Registration &amp; Protection) Act in 1999. For the first time, Indian law could say that a product belongs to a place, and to the people who make it there.</p>
+        </div>
+        <div class="about-image reveal delay-1">
+          <div class="styled-image cat-rice" style="background: linear-gradient(160deg, #B8893B 0%, #4B2E1B 100%); justify-content: flex-end;">
+            <img class="styled-image-photo" src="/91GI_Images/Basmati.png" alt="Long-grain basmati rice, one of the names India fought to protect." />
+            <div class="styled-image-content" style="z-index: 2;">
+              <div class="styled-image-region" style="color: var(--gold-soft);">A NAME WORTH DEFENDING</div>
+              <div class="styled-image-divider" style="background: var(--gold-soft);"></div>
+              <div class="styled-image-name" style="font-size: 36px;">Basmati</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ol class="gis-timeline reveal" aria-label="Milestones in India's GI journey">
+        <li>
+          <div class="gis-tl-year">1995</div>
+          <div class="gis-tl-text">India becomes a founding member of the WTO. Its TRIPS agreement asks members to protect geographical indications.</div>
+        </li>
+        <li>
+          <div class="gis-tl-year">1999</div>
+          <div class="gis-tl-text">Parliament passes the GI Act, India's own law for protecting where a product comes from.</div>
+        </li>
+        <li>
+          <div class="gis-tl-year">2003</div>
+          <div class="gis-tl-text">The Act comes into force, and the Geographical Indications Registry opens in Chennai.</div>
+        </li>
+        <li>
+          <div class="gis-tl-year">2004</div>
+          <div class="gis-tl-text">Darjeeling Tea becomes the first product registered as an Indian GI.</div>
+        </li>
+        <li>
+          <div class="gis-tl-year">2018</div>
+          <div class="gis-tl-text">India unveils a national GI logo and the tagline "Invaluable Treasures of Incredible India".</div>
+        </li>
+        <li>
+          <div class="gis-tl-year">Today</div>
+          <div class="gis-tl-text">More than 800 registered GIs, with many more applications waiting their turn.</div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- THE STORY (long-form) -->
+  <section class="gis-article-wrap" id="story">
+    <article class="gis-article">
+      <header class="gis-article-head reveal">
+        <span class="eyebrow">The Story</span>
+        <h2>From Certificates<br /><em>to Livelihoods</em></h2>
+        <p>India's GI story, and why it isn't finished yet</p>
+      </header>
+
+      <p class="gis-dropcap">On paper, a GI tag is a finished thing. A producers' body files an application, the Registry examines it, objections are heard, and a certificate is issued. The process is long, but it has a clear end.</p>
+
+      <p>Turning that certificate into a living for a village is a different job, and it has no end date. A tag does not raise anyone's price on its own. It needs people who know India's regions first-hand: the soil, the season, the family that has grown one crop for five generations. The same people also have to understand buyers, build a supply chain that holds from the farm gate to the front door, and actually sell.</p>
+
+      <blockquote class="gis-pull">A GI tag protects a name. Only a fair market protects the people behind it.</blockquote>
+
+      <h3>The long road from tag to table</h3>
+
+      <p>Most GIs are registered by a producers' association, a cooperative or a state body. Individual growers must then register as Authorised Users before they can legally sell under the name, and in many regions only a small share ever do. The rest still sell at the nearest mandi, where a GI-tagged harvest is often weighed and priced like any ordinary crop.</p>
+
+      <p>That can't be fixed from an office in a big city. It means travelling to the district that owns the tag, staying through a harvest, learning how the produce is grown, dried and stored, and earning the trust of the people who grow it. The work is slow and unglamorous, and it's the only kind that lasts.</p>
+
+      <figure class="gis-figure reveal">
+        <img src="/91GI_Images/Mission.png" alt="A grower sorting saffron at sunset beside sacks of turmeric, makhana and spices, with signs reading Fair Pay, Protecting Our Heritage, and Pure, Natural, Sustainable." loading="lazy" />
+        <figcaption>Fair pay, protected heritage, honest produce: the three things a GI is supposed to stand for.</figcaption>
+      </figure>
+
+      <p>That is the road 91GI chose. We source from the region named on each GI, work with the farmer producer organisations, cooperatives and growers who hold it, and pay prices that reflect what the name is actually worth.</p>
+
+      <h3>A name the world already respects</h3>
+
+      <p>Other countries learned this long ago. Champagne, Parmigiano Reggiano and Scotch whisky earn a premium because their origin is guarded and their quality holds steady. In 2011, Darjeeling Tea became the first Indian product protected as a GI in the European Union.</p>
+
+      <p>India has hundreds more names that deserve the same standing, among them Kashmir saffron, Mithila makhana, Araku Valley coffee and Sangli raisins. They will earn it the same way: by keeping their promise every single time.</p>
+
+      <h3>GI for every kitchen</h3>
+
+      <p>A GI tag is not a luxury label. Most of India's GI foods are everyday staples: rice, dal, chillies, jaggery, ghee and spices that Indian families have cooked with for generations. They belong on the dinner table, not just in a festive gift hamper.</p>
+
+      <blockquote class="gis-pull">Heritage shouldn't be priced like a souvenir. It should be something every family can afford to eat.</blockquote>
+
+      <p>So we keep the quality bar high and our margins lean. We work with producers all year, not only at harvest, and we aim for a price that is fair at both ends: to the grower who sold it and the family who buys it.</p>
+
+      <p>Every purchase also counts as a vote. When demand for a GI grows, more growers register to use its name, more young people see a future in farming, and the name gets harder to fake.</p>
+
+      <div class="gis-closing reveal">
+        <strong>Bringing together 62 GI&#8209;tagged foods, from the apricot orchards of Ladakh to the clove gardens of Kanniyakumari, and <em>growing one region at a time.</em></strong>
+      </div>
+    </article>
+  </section>
+
+  <!-- IN OUR NAME -->
+  <section class="gis-name">
+    <div class="container-narrow reveal">
+      <span class="eyebrow">In Our Name</span>
+      <div class="gis-name-mark" aria-label="Plus 91, GI">+91<span>·</span><em>GI</em></div>
+      <p>91 is India's dialling code. GI is the law that protects where a thing comes from. Put them together and you have our whole idea: India calling the world, with proof of origin in hand.</p>
+    </div>
+  </section>
+
+  <!-- THE PROMISE -->
+  <section class="gis-promise">
+    <div class="container reveal">
+      <span class="eyebrow">The 91GI Promise</span>
+      <h2>Authenticity.</h2>
+      <p class="gis-promise-line">Three things we never leave to guesswork: <b>the place</b> it grew, <b>the people</b> who grew it, and <b>the product</b> itself.</p>
+      <blockquote>"Our work is to reconnect people with their roots, and to hand them food that is exactly what its name says it is, with nothing diluted, swapped or traded away along the way."</blockquote>
+    </div>
+  </section>
+
+  <!-- MANDATE -->
+  <section class="gis-mandate">
+    <div class="container">
+      <div class="gis-mandate-grid">
+        <div class="reveal">
+          <span class="eyebrow">Our Mandate</span>
+          <h2>To bring India's roots <em>to the world's table.</em></h2>
+        </div>
+        <div class="reveal delay-1">
+          <p>The Geographical Indications of Goods (Registration &amp; Protection) Act, 1999 was written to protect two things: the name of a product, and the community that earned it.</p>
+          <p>91GI exists to carry that same purpose past the register and into the marketplace, so the law's promise reaches a family's kitchen and a grower's income.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="gis-values-wrap">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">What Every Product Must Carry</span>
+        <h2 class="section-title">Four <em style="font-family: var(--font-display); font-style: italic; color: var(--vermillion); font-weight: 400;">non-negotiables.</em></h2>
+      </div>
+      <div class="gis-values">
+        <div class="gis-value reveal">
+          <span class="gis-value-num">01</span>
+          <h3>Origin, guaranteed</h3>
+          <p>Every product comes from the region named on its GI. Where it grew is never a guess.</p>
+        </div>
+        <div class="gis-value reveal delay-1">
+          <span class="gis-value-num">02</span>
+          <h3>The character of the land</h3>
+          <p>If it doesn't taste, smell and look like the place it came from, it doesn't belong on 91GI.</p>
+        </div>
+        <div class="gis-value reveal delay-2">
+          <span class="gis-value-num">03</span>
+          <h3>Checked before it's listed</h3>
+          <p>Every batch is verified at source and backed by paperwork before it earns a place in our store.</p>
+        </div>
+        <div class="gis-value reveal delay-3">
+          <span class="gis-value-num">04</span>
+          <h3>Your word counts</h3>
+          <p>Reviews and feedback come straight to us and, where it matters, go back to the growers.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="gis-cta">
+    <div class="container-narrow reveal">
+      <span class="eyebrow">Taste the Story</span>
+      <h2>Every jar has <em>a place behind it.</em></h2>
+      <p>Explore India's GI foods by state, or start with whatever your kitchen is missing.</p>
+      <div class="gis-cta-actions">
+        <a href="/shop/" class="btn btn-primary btn-lg">Shop All Products</a>
+        <a href="/states/" class="btn btn-ghost btn-lg">Browse by State</a>
+      </div>
+      <p class="gis-sources">Figures from the Geographical Indications Registry (DPIIT, Government of India) and the Press Information Bureau, as of 2026.</p>
+    </div>
+  </section>
+
+  <div id="footerMount"></div>
+
+  <script src="/assets/js/products.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
