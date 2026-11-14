@@ -132,14 +132,14 @@
               <input type="radio" name="payment" value="cod" />
               <div class="payment-option-text">
                 <div class="payment-option-title">Cash on Delivery</div>
-                <div class="payment-option-sub">Pay when your order arrives (₹49 extra)</div>
+                <div class="payment-option-sub">Pay when your order arrives (<span data-price-inr="49">$0.51</span> extra)</div>
               </div>
             </label>
           </div>
         </div>
 
         <button type="submit" class="btn btn-primary btn-block btn-lg" style="margin-top: 16px;">
-          Place Order — ₹<span id="totalBtn">0</span>
+          Place Order — <span id="totalBtn">$0.00</span>
         </button>
 
         <p style="text-align: center; font-size: 12px; color: var(--mute); margin-top: 16px; line-height: 1.6;">
@@ -200,7 +200,7 @@
       }
 
       const codSelected = document.querySelector('input[name="payment"]:checked')?.value === 'cod';
-      const codFee = codSelected ? 49 : 0;
+      const codFee = codSelected ? COD_FEE_CENTS : 0;
       const finalTotal = Cart.getTotal() + codFee;
 
       summary.innerHTML = `
@@ -217,28 +217,28 @@
                 <strong>${p.name}</strong>
                 <span>${p.region} · ${p.unit} · Qty ${item.qty}</span>
               </div>
-              <div class="summary-item-price">₹${(p.price * item.qty).toLocaleString('en-IN')}</div>
+              <div class="summary-item-price">${formatPrice(priceCents(p) * item.qty)}</div>
             </div>
           `;
         }).join('')}
 
         <div class="summary-totals">
-          <div class="summary-row"><span>Subtotal</span><span>₹${Cart.getSubtotal().toLocaleString('en-IN')}</span></div>
+          <div class="summary-row"><span>Subtotal</span><span>${formatPrice(Cart.getSubtotal())}</span></div>
           ${Cart.getMRPSavings() > 0 ? `
           <div class="summary-row" style="color: var(--vermillion);">
             <span>MRP savings</span>
-            <span>− ₹${Cart.getMRPSavings().toLocaleString('en-IN')}</span>
+            <span>− ${formatPrice(Cart.getMRPSavings())}</span>
           </div>` : ''}
           <div class="summary-row">
             <span>Shipping</span>
-            <span>${Cart.getShipping() === 0 ? '<strong style="color: var(--forest); font-weight: 500;">Free</strong>' : '₹' + Cart.getShipping()}</span>
+            <span>${Cart.getShipping() === 0 ? '<strong style="color: var(--forest); font-weight: 500;">Free</strong>' : formatPrice(Cart.getShipping())}</span>
           </div>
-          ${codSelected ? `<div class="summary-row"><span>COD fee</span><span>₹49</span></div>` : ''}
-          <div class="summary-row grand"><span>Total</span><span>₹${finalTotal.toLocaleString('en-IN')}</span></div>
+          ${codSelected ? `<div class="summary-row"><span>COD fee</span><span>${formatPrice(COD_FEE_CENTS)}</span></div>` : ''}
+          <div class="summary-row grand"><span>Total</span><span>${formatPrice(finalTotal)}</span></div>
         </div>
       `;
 
-      document.getElementById('totalBtn').textContent = finalTotal.toLocaleString('en-IN');
+      document.getElementById('totalBtn').textContent = formatPrice(finalTotal);
     }
 
     function placeOrder(e) {

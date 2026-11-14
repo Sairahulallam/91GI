@@ -70,20 +70,20 @@
           <div class="filter-title">Price</div>
           <ul class="filter-list">
             <li class="filter-item">
-              <input type="checkbox" id="price-1" value="0-300" onchange="applyFilters()" />
-              <label for="price-1">Under ₹300</label>
+              <input type="checkbox" id="price-1" value="0-3" onchange="applyFilters()" />
+              <label for="price-1">Under $3</label>
             </li>
             <li class="filter-item">
-              <input type="checkbox" id="price-2" value="300-600" onchange="applyFilters()" />
-              <label for="price-2">₹300 – ₹600</label>
+              <input type="checkbox" id="price-2" value="3-6" onchange="applyFilters()" />
+              <label for="price-2">$3 – $6</label>
             </li>
             <li class="filter-item">
-              <input type="checkbox" id="price-3" value="600-1000" onchange="applyFilters()" />
-              <label for="price-3">₹600 – ₹1,000</label>
+              <input type="checkbox" id="price-3" value="6-10" onchange="applyFilters()" />
+              <label for="price-3">$6 – $10</label>
             </li>
             <li class="filter-item">
-              <input type="checkbox" id="price-4" value="1000-99999" onchange="applyFilters()" />
-              <label for="price-4">Above ₹1,000</label>
+              <input type="checkbox" id="price-4" value="10-99999" onchange="applyFilters()" />
+              <label for="price-4">Above $10</label>
             </li>
           </ul>
         </div>
@@ -179,9 +179,11 @@
       if (activeFilters.states.size > 0) results = results.filter(p => activeFilters.states.has(p.state));
       if (activeFilters.prices.size > 0) {
         results = results.filter(p => {
+          // Ranges are in whole USD; compare against the converted price
+          const usd = priceCents(p) / 100;
           for (const range of activeFilters.prices) {
             const [min, max] = range.split('-').map(Number);
-            if (p.price >= min && p.price <= max) return true;
+            if (usd >= min && usd <= max) return true;
           }
           return false;
         });

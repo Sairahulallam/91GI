@@ -107,8 +107,8 @@
           </p>
 
           <div class="product-detail-price">
-            <span class="price">₹${product.price.toLocaleString('en-IN')}</span>
-            ${product.mrp ? `<span class="price-mrp">₹${product.mrp.toLocaleString('en-IN')}</span>` : ''}
+            <span class="price">${formatPrice(priceCents(product))}</span>
+            ${product.mrp ? `<span class="price-mrp">${formatPrice(mrpCents(product))}</span>` : ''}
             ${discount ? `<span class="price-discount">Save ${discount}%</span>` : ''}
           </div>
 
