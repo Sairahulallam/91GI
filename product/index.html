@@ -34,17 +34,6 @@
     </article>
   </div>
 
-  <!-- STORY SECTION -->
-  <section class="story-section" id="storySection" style="display: none;">
-    <div class="container">
-      <div class="story-section-inner">
-        <span class="eyebrow">The Story</span>
-        <h2 id="storyHeading">The story behind this region</h2>
-        <div class="story-section-body" id="storyBody"></div>
-      </div>
-    </div>
-  </section>
-
   <!-- RELATED PRODUCTS -->
   <section class="section" id="relatedSection" style="display: none;">
     <div class="container">
@@ -59,6 +48,7 @@
   <div id="footerMount"></div>
 
   <script src="/assets/js/products.js"></script>
+  <script src="/assets/js/product-details.js"></script>
   <script src="/assets/js/main.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -151,28 +141,18 @@
             </div>
             <div style="display: flex; align-items: center; gap: 8px;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--forest);">
-                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
-                <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
-              </svg>
-              Free shipping over ${formatPrice(FREE_SHIPPING_OVER_CENTS)}
-            </div>
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="color: var(--forest);">
                 <path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/>
                 <circle cx="12" cy="10" r="3"/>
               </svg>
               GI-origin verified
             </div>
           </div>
+
+          ${renderDetailTabs(product)}
         </div>
       `;
 
-      // Story section
-      if (product.story) {
-        document.getElementById('storySection').style.display = 'block';
-        document.getElementById('storyHeading').textContent = `The story of ${product.region}`;
-        document.getElementById('storyBody').innerHTML = product.story.split('\n').filter(Boolean).map(p => `<p>${p.trim()}</p>`).join('');
-      }
+      initDetailTabs();
 
       // Related products: same category, different product
       const related = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
@@ -182,6 +162,98 @@
         renderProductGrid(related, '#relatedGrid');
       }
     });
+
+    // ---------- Origin Story · Additional Info · Ingredients tabs ----------
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function renderDetailTabs(product) {
+      const d = getProductDetails(product);
+      const tabs = [];
+
+      if (d.originStory) {
+        const paras = d.originStory.split('\n').map(p => p.trim()).filter(Boolean);
+        tabs.push({ key: 'origin', label: 'Origin Story', html: `
+          <div class="pd-story is-collapsed" id="pdStory">${paras.map(p => `<p>${escapeHtml(p)}</p>`).join('')}</div>
+          <button type="button" class="pd-readmore" id="pdReadMore" aria-expanded="false" aria-controls="pdStory">Read full story</button>
+        ` });
+      }
+
+      if (d.additionalInfo.length) {
+        tabs.push({ key: 'info', label: 'Additional Info', html: `
+          <dl class="pd-info">
+            ${d.additionalInfo.map(([k, v]) => `<div class="pd-info-row"><dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd></div>`).join('')}
+          </dl>
+        ` });
+      }
+
+      if (d.ingredients.length) {
+        tabs.push({ key: 'ingredients', label: 'Ingredients', html: `
+          <ul class="pd-ingredients">${d.ingredients.map(i => `<li>${escapeHtml(i)}</li>`).join('')}</ul>
+          ${d.allergens ? `<p class="pd-allergens"><strong>Allergen information:</strong> ${escapeHtml(d.allergens)}</p>` : ''}
+        ` });
+      }
+
+      if (!tabs.length) return '';
+
+      return `
+        <section class="pd-tabs" aria-label="Product details">
+          <div class="pd-tablist" role="tablist">
+            ${tabs.map((t, i) => `
+              <button type="button" class="pd-tab" role="tab" id="pdTab-${t.key}" aria-controls="pdPanel-${t.key}"
+                aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}">${t.label}</button>
+            `).join('')}
+          </div>
+          ${tabs.map((t, i) => `
+            <div class="pd-panel" role="tabpanel" id="pdPanel-${t.key}" aria-labelledby="pdTab-${t.key}" ${i === 0 ? '' : 'hidden'}>
+              ${t.html}
+            </div>
+          `).join('')}
+        </section>
+      `;
+    }
+
+    function initDetailTabs() {
+      const tabs = [...document.querySelectorAll('.pd-tab')];
+      const select = (tab) => {
+        tabs.forEach(t => {
+          const on = t === tab;
+          t.setAttribute('aria-selected', on);
+          t.tabIndex = on ? 0 : -1;
+          document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+        });
+      };
+      tabs.forEach((tab, i) => {
+        tab.addEventListener('click', () => select(tab));
+        tab.addEventListener('keydown', (e) => {
+          const next = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+          if (next === undefined) return;
+          e.preventDefault();
+          const target = tabs[(next + tabs.length) % tabs.length];
+          select(target);
+          target.focus();
+        });
+      });
+
+      // "Read full story" — only shown when the clamped preview actually hides text.
+      const story = document.getElementById('pdStory');
+      const btn = document.getElementById('pdReadMore');
+      if (!story || !btn) return;
+      const syncReadMore = () => {
+        if (!story.classList.contains('is-collapsed')) return;
+        btn.hidden = story.scrollHeight <= story.clientHeight + 1;
+      };
+      btn.addEventListener('click', () => {
+        const expand = story.classList.contains('is-collapsed');
+        story.classList.toggle('is-collapsed', !expand);
+        btn.setAttribute('aria-expanded', expand);
+        btn.textContent = expand ? 'Show less' : 'Read full story';
+      });
+      syncReadMore();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncReadMore);
+      window.addEventListener('resize', syncReadMore);
+    }
 
     let currentQty = 1;
     function changeQty(delta) {
