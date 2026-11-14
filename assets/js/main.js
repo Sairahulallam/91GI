@@ -409,6 +409,7 @@ function injectNav(activePage) {
             <a href="/categories/" class="${activePage==='categories'?'active':''}">Categories</a>
             <a href="/states/" class="${activePage==='states'?'active':''}">By State</a>
             <a href="/about/" class="${activePage==='about'?'active':''}">Our Story</a>
+            <a href="/gi-story/" class="${activePage==='gi-story'?'active':''}">India's GI Story</a>
             <a href="/landing/" class="${activePage==='landing'?'active':''}">Take the Survey</a>
           </div>
           <div class="nav-actions">
@@ -438,6 +439,7 @@ function injectNav(activePage) {
       <a href="/categories/">Categories</a>
       <a href="/states/">By State</a>
       <a href="/about/">Our Story</a>
+      <a href="/gi-story/">India's GI Story</a>
       <a href="/landing/">Take the Survey</a>
       <a href="/cart/">Basket</a>
     </aside>
@@ -493,6 +495,7 @@ function injectFooter() {
             <h4>Company</h4>
             <ul>
               <li><a href="/about/">Our Story</a></li>
+              <li><a href="/gi-story/">India's GI Story</a></li>
               <li><a href="/about/#mission">Mission</a></li>
               <li><a href="/about/#farmers">Farmers</a></li>
               <li><a href="/about/#gi">What is GI?</a></li>
