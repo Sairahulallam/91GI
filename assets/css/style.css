@@ -332,6 +332,12 @@ h1, h2, h3, h4, h5, h6 {
   transition: all 0.3s var(--ease);
 }
 
+/* Seven links: tighten spacing on narrower desktops so they never crowd the logo */
+@media (max-width: 1280px) {
+  .nav-links { gap: 22px; }
+  .nav-links a { font-size: 13px; }
+}
+
 @media (max-width: 1024px) {
   .nav-links { display: none; }
   .mobile-toggle { display: flex; }
@@ -1345,7 +1351,7 @@ h1, h2, h3, h4, h5, h6 {
   object-fit: cover;
 }
 
-.product-detail-info { padding-top: 20px; }
+.product-detail-info { padding-top: 20px; min-width: 0; }
 
 .product-detail-info .eyebrow {
   margin-bottom: 12px;
@@ -1502,6 +1508,145 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--gold);
   border-radius: 50%;
   flex-shrink: 0;
+}
+
+/* ---------- Product detail tabs: Origin Story · Additional Info · Ingredients ---------- */
+.pd-tabs {
+  margin-top: 28px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 18px 24px 22px;
+}
+
+.pd-tablist {
+  display: flex;
+  gap: 28px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 16px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.pd-tablist::-webkit-scrollbar { display: none; }
+
+.pd-tab {
+  padding: 4px 0 10px;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgba(15, 31, 23, 0.4);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.pd-tab:hover { color: rgba(15, 31, 23, 0.65); }
+.pd-tab[aria-selected="true"] {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+}
+.pd-tab:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.pd-panel[hidden] { display: none; }
+
+.pd-story {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--mute);
+}
+.pd-story p + p { margin-top: 14px; }
+
+/* Collapsed: run paragraphs together and clamp to 4 lines with an ellipsis. */
+.pd-story.is-collapsed {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+.pd-story.is-collapsed p { display: inline; }
+.pd-story.is-collapsed p + p::before { content: ' '; }
+
+.pd-readmore {
+  margin-top: 14px;
+  padding: 0 0 2px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--forest);
+  border-bottom: 1px solid rgba(27, 67, 50, 0.3);
+  transition: border-color 0.2s var(--ease);
+}
+.pd-readmore:hover { border-bottom-color: var(--forest); }
+.pd-readmore[hidden] { display: none; }
+
+.pd-info { margin: 0; }
+.pd-info-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 38%) 1fr;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--line-strong);
+}
+.pd-info-row:last-child { border-bottom: none; }
+.pd-info dt {
+  font-size: 13px;
+  color: var(--mute);
+}
+.pd-info dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.pd-ingredients {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.pd-ingredients li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 6px 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+.pd-ingredients li::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+  transform: translateY(-2px);
+}
+.pd-allergens {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: var(--cream-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+@media (max-width: 600px) {
+  .pd-tabs { padding: 14px 16px 18px; }
+  .pd-tablist { gap: 16px; }
+  .pd-tab { font-size: 11px; letter-spacing: 0.08em; }
+  .pd-info-row { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (max-width: 380px) {
+  .pd-tablist { gap: 12px; }
+  .pd-tab { letter-spacing: 0.04em; }
 }
 
 .story-section {
