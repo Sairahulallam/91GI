@@ -48,6 +48,7 @@
   <div id="footerMount"></div>
 
   <script src="/assets/js/products.js"></script>
+  <script src="/assets/js/gi-data.js"></script>
   <script src="/assets/js/product-details.js"></script>
   <script src="/assets/js/main.js"></script>
   <script>
@@ -178,6 +179,13 @@
           <div class="pd-story is-collapsed" id="pdStory">${paras.map(p => `<p>${escapeHtml(p)}</p>`).join('')}</div>
           <button type="button" class="pd-readmore" id="pdReadMore" aria-expanded="false" aria-controls="pdStory">Read full story</button>
         ` });
+      }
+
+      const giHtml = typeof renderGICertificationPanel === 'function'
+        ? renderGICertificationPanel(product.id)
+        : '';
+      if (giHtml) {
+        tabs.push({ key: 'gi', label: 'GI Certification', html: giHtml });
       }
 
       if (d.additionalInfo.length) {
