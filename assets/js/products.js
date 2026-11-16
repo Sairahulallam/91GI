@@ -5,7 +5,7 @@ const PRODUCTS = [
   // ============ BEFACH SPECIAL ============
   {
     id: 'befach-low-diabetic-rice',
-    name: 'Befach Low Diabetic Rice',
+    name: 'Low Diabetic Rice',
     category: 'Rice',
     region: 'India',
     state: 'Special',
@@ -17,7 +17,7 @@ const PRODUCTS = [
     image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=900&q=85',
     tagline: 'Rice that loves you back.',
     shortDesc: 'A low-glycemic-index rice crafted for the modern Indian — keeps the taste, drops the spike.',
-    story: `For decades, Indian households have shared one quiet ache at the dinner table: the love for rice, and the fear of what it does to the body. Befach Low Diabetic Rice was born from that conflict — a careful answer to a generational compromise.\n\nGrown using a low-GI varietal protocol, slow-aged, and hand-finished, this rice keeps the fragrance of a freshly cooked pot of biryani and the comfort of a simple home meal, while staying gentle on blood sugar. It is rice for the family elder who was told to give it up, for the young professional who is watching their numbers, for the mother feeding a family of different needs from one pot.\n\nThis is not a substitute. It is rice — only kinder.`,
+    story: `For decades, Indian households have shared one quiet ache at the dinner table: the love for rice, and the fear of what it does to the body. Low Diabetic Rice was born from that conflict — a careful answer to a generational compromise.\n\nGrown using a low-GI varietal protocol, slow-aged, and hand-finished, this rice keeps the fragrance of a freshly cooked pot of biryani and the comfort of a simple home meal, while staying gentle on blood sugar. It is rice for the family elder who was told to give it up, for the young professional who is watching their numbers, for the mother feeding a family of different needs from one pot.\n\nThis is not a substitute. It is rice — only kinder.`,
     keyFacts: [
       'Low Glycemic Index (≈ 52)',
       'Slow-aged for 6 months',
