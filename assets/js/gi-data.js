@@ -169,10 +169,10 @@
       text = "Registered under the Geographical Indications of Goods (Registration and Protection) Act, 1999";
     } else if (r.status === "examination") {
       label = "GI Application Filed";
-      text = "GI application filed and under examination — not yet registered";
+      text = "Status at the GI Registry: Under examination";
     } else {
       label = "GI Application Filed";
-      text = "GI application filed — not yet examined or registered";
+      text = "Status at the GI Registry: Pre-examination";
     }
 
     let html = '<div class="gi-proof">';
@@ -212,7 +212,7 @@
         "and the GI Journal entry is the official specification the product must meet. " +
         'Law: <a href="' + esc(window.GI_ACT_URL) + '" target="_blank" rel="noopener noreferrer">GI Act, 1999</a>.</p>';
     } else {
-      html += '<p class="gi-note">This product is sourced from its traditional region, but its GI application is still pending, so it is not sold as a GI-registered product. ' +
+      html += '<p class="gi-note">This product is sourced from its traditional region. Its GI application has been filed with the GI Registry and is in process. ' +
         'Law: <a href="' + esc(window.GI_ACT_URL) + '" target="_blank" rel="noopener noreferrer">GI Act, 1999</a>.</p>';
     }
 
