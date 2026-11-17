@@ -14,7 +14,7 @@ A premium e-commerce storefront for **India's Geographical Indication (GI) produ
 - **Browse by Category** and **Browse by State** (grouped by region of India)
 - **Storytelling product pages** — every product carries the real story of its origin, why it earned its GI tag, and an emotional connection to the place and the people who grow it
 - **Full shop experience** — search, multi-filter (category + state + price), and sort
-- **Working cart & checkout** — slide-out basket, full cart page, and a complete checkout flow with order summary, live totals, free-shipping threshold, and multiple payment options
+- **Request a Quote instead of a cart** — every product shows an indicative USD price range (discounted price → MRP) and a quote form. Each request is saved to the Google Sheet behind [`landing/survey-backend.gs`](landing/survey-backend.gs), emailed to the sales team, and listed under **Quotations** in `/admin`, where its status can be tracked
 - **Befach Low Diabetic Rice** featured as a special product
 - **Premium design** — forest-green / cream / vermillion palette drawn from the 91GI logo, Playfair Display + DM Sans typography, scroll-reveal animations, responsive down to mobile
 - **Accessible & SEO-aware** — associated form labels, per-page meta descriptions, semantic markup
@@ -27,9 +27,10 @@ Pages live in folders so every URL is clean (`/shop`, `/about`) with **no `.html
 .
 ├── index.html             # Home  →  /
 ├── shop/index.html        # Shop all  →  /shop      (filters, search, sort)
-├── product/index.html     # Product detail  →  /product?id=…  (story, add-to-cart)
-├── cart/index.html        # Basket  →  /cart
-├── checkout/index.html    # Checkout  →  /checkout
+├── product/index.html     # Product detail  →  /product?id=…  (story, request a quote)
+├── cart/, checkout/       # Old basket links — redirect to /shop
+├── admin/                 # Survey stats + Quotations  →  /admin  (password-protected)
+├── landing/survey-backend.gs  # Google Apps Script: Sheet storage, quote emails, admin API
 ├── categories/index.html  # Browse by category  →  /categories
 ├── states/index.html      # Browse by state  →  /states
 ├── about/index.html       # The 91GI story  →  /about
@@ -38,7 +39,8 @@ Pages live in folders so every URL is clean (`/shop`, `/about`) with **no `.html
     ├── css/style.css      # Design system + components + page transitions
     └── js/
         ├── products.js    # 62-product catalog + stories + helpers
-        └── main.js        # Cart, nav/footer injection, prefetch, animations
+        ├── main.js        # Price ranges, nav/footer injection, prefetch, animations
+        └── quote.js       # "Request a Quote" dialog (product page)
 ```
 
 **App-like navigation:** uses the [View Transitions API](https://developer.mozilla.org/docs/Web/API/View_Transitions_API)
@@ -61,7 +63,7 @@ Then open <http://localhost:8765>.
 ## 🛠️ Tech
 
 - Vanilla HTML, CSS, and JavaScript — **zero framework, zero dependencies**
-- `localStorage`-backed cart
+- Google Apps Script + Google Sheet as the backend (quotes, survey, admin data)
 - Google Fonts (Playfair Display, Cormorant Garamond, DM Sans)
 
 ## 📦 Catalog Source

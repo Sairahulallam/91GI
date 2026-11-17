@@ -51,6 +51,7 @@
   <script src="/assets/js/gi-data.js"></script>
   <script src="/assets/js/product-details.js"></script>
   <script src="/assets/js/main.js"></script>
+  <script src="/assets/js/quote.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const params = new URLSearchParams(window.location.search);
@@ -74,8 +75,6 @@
       if (metaDesc) metaDesc.setAttribute('content', `${product.name} from ${product.region}, ${product.state}. ${product.shortDesc}`);
       document.getElementById('bcProduct').textContent = product.name;
 
-      const discount = product.mrp ? Math.round(((product.mrp - product.price) / product.mrp) * 100) : 0;
-
       document.getElementById('productDetail').innerHTML = `
         <div class="product-detail-gallery">
           <div class="product-detail-image">
@@ -97,10 +96,6 @@
               <span class="product-meta-label">State</span>
               <span class="product-meta-value">${product.state}</span>
             </div>
-            <div class="product-meta-item">
-              <span class="product-meta-label">Pack</span>
-              <span class="product-meta-value">${product.unit}</span>
-            </div>
           </div>
 
           <p style="color: var(--mute); font-size: 16px; margin-bottom: 28px; line-height: 1.7;">
@@ -108,25 +103,14 @@
           </p>
 
           <div class="product-detail-price">
-            <span class="price">${formatPrice(priceCents(product))}</span>
-            ${product.mrp ? `<span class="price-mrp">${formatPrice(mrpCents(product))}</span>` : ''}
-            ${discount ? `<span class="price-discount">Save ${discount}%</span>` : ''}
+            <span class="price">${formatPriceRange(product)}</span>
+            <span class="price-note">Indicative price range · your quote depends on volume and destination</span>
           </div>
 
-          <div class="qty-cart">
-            <div class="qty-control">
-              <button class="qty-btn" onclick="changeQty(-1)" aria-label="Decrease">−</button>
-              <span class="qty-display" id="qtyDisplay">1</span>
-              <button class="qty-btn" onclick="changeQty(1)" aria-label="Increase">+</button>
-            </div>
-            <button class="btn-add-cart" id="addCartBtn" onclick="addToCart('${product.id}')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-              Add to Basket
-            </button>
-          </div>
+          <button type="button" class="btn-quote btn-quote-cta" onclick="openQuote()">
+            ${QUOTE_ICON}
+            Request a Quote
+          </button>
 
           <div class="key-facts">
             ${product.keyFacts.map(f => `<div class="key-fact">${f}</div>`).join('')}
@@ -154,6 +138,7 @@
       `;
 
       initDetailTabs();
+      initQuote(product);
 
       // Related products: same category, different product
       const related = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
@@ -261,35 +246,6 @@
       syncReadMore();
       if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncReadMore);
       window.addEventListener('resize', syncReadMore);
-    }
-
-    let currentQty = 1;
-    function changeQty(delta) {
-      currentQty = Math.max(1, currentQty + delta);
-      document.getElementById('qtyDisplay').textContent = currentQty;
-    }
-
-    function addToCart(id) {
-      Cart.add(id, currentQty);
-      const btn = document.getElementById('addCartBtn');
-      btn.classList.add('added');
-      btn.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-        Added to Basket
-      `;
-      setTimeout(() => {
-        btn.classList.remove('added');
-        btn.innerHTML = `
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
-          Add to Basket
-        `;
-      }, 2000);
-      openCart();
     }
   </script>
 </body>

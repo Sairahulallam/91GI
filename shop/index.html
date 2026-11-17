@@ -179,11 +179,12 @@
       if (activeFilters.states.size > 0) results = results.filter(p => activeFilters.states.has(p.state));
       if (activeFilters.prices.size > 0) {
         results = results.filter(p => {
-          // Ranges are in whole USD; compare against the converted price
-          const usd = priceCents(p) / 100;
+          // Buckets are in whole USD; a product matches when any part of its
+          // indicative price range falls inside the bucket.
+          const { low, high } = priceRangeCents(p);
           for (const range of activeFilters.prices) {
             const [min, max] = range.split('-').map(Number);
-            if (usd >= min && usd <= max) return true;
+            if (low / 100 <= max && high / 100 >= min) return true;
           }
           return false;
         });
