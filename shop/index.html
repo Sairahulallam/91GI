@@ -237,16 +237,29 @@
       buildFilterUI();
 
       const params = new URLSearchParams(window.location.search);
-      const cat = params.get('category');
       const st = params.get('state');
 
-      if (cat) {
-        const el = document.querySelector(`input[data-filter="categories"][value="${cat}"]`);
-        if (el) {
-          el.checked = true;
-          document.getElementById('shopTitle').innerHTML = cat + ` <em style="font-family: var(--font-display); font-style: italic; color: var(--gold-soft); font-weight: 400;">Collection</em>`;
-          document.getElementById('shopSubtitle').textContent = `Heritage ${cat.toLowerCase()} sourced direct from their GI regions.`;
-        }
+      // ?category=Rice — or a group of categories with a name for the heading,
+      // e.g. ?category=Tea&category=Coffee&label=Tea+%26+Coffee (Our Story page cards)
+      const catBoxes = Array.from(document.querySelectorAll('input[data-filter="categories"]'));
+      const cats = params.getAll('category').filter(c => {
+        const el = catBoxes.find(box => box.value === c);
+        if (el) el.checked = true;
+        return !!el;
+      });
+      if (cats.length) {
+        const label = params.get('label');
+        const name = cats.length === 1 ? cats[0] : (label || 'Selected');
+        const title = document.getElementById('shopTitle');
+        const em = document.createElement('em');
+        em.style.cssText = 'font-family: var(--font-display); font-style: italic; color: var(--gold-soft); font-weight: 400;';
+        em.textContent = 'Collection';
+        title.textContent = name + ' ';
+        title.appendChild(em);
+        document.getElementById('shopSubtitle').textContent =
+          cats.length === 1 ? `Heritage ${name.toLowerCase()} sourced direct from their GI regions.`
+          : label ? `GI-tagged ${label.toLowerCase()} sourced direct from their regions of origin.`
+          : 'GI-tagged products from the selected categories.';
       }
       if (st) {
         const el = document.querySelector(`input[data-filter="states"][value="${st}"]`);
