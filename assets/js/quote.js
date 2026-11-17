@@ -17,7 +17,17 @@ function quoteEsc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+// p is a catalog product, or a general enquiry that isn't tied to one product:
+//   { general: true, id, name (saved as the product), heading, subtitle }
+// A general enquiry has no price and asks the buyer which products they need.
 function renderQuoteDialog(p) {
+  const sub = p.general
+    ? quoteEsc(p.subtitle || '')
+    : `${quoteEsc(p.region)}, ${quoteEsc(p.state)} · Indicative ${formatPriceRange(p)}`;
+  const msgLabel = p.general ? 'Which products do you need?' : 'Requirements (optional)';
+  const msgHint = p.general
+    ? 'e.g. Kashmir saffron, Lakadong turmeric. Add packaging, destination port and timeline if you know them.'
+    : 'Packaging, grade, certifications, destination port, timeline…';
   return `
     <dialog class="quote-dialog" id="quoteDialog" aria-labelledby="quoteTitle">
       <button type="button" class="quote-close" onclick="closeQuote()" aria-label="Close">
@@ -27,9 +37,9 @@ function renderQuoteDialog(p) {
       </button>
 
       <form class="quote-form" id="quoteForm">
-        <span class="eyebrow">Request a quote</span>
-        <h2 id="quoteTitle">${quoteEsc(p.name)}</h2>
-        <p class="quote-sub">${quoteEsc(p.region)}, ${quoteEsc(p.state)} · Indicative ${formatPriceRange(p)}</p>
+        <span class="eyebrow">${p.general ? 'Bulk &amp; trade enquiry' : 'Request a quote'}</span>
+        <h2 id="quoteTitle">${quoteEsc(p.heading || p.name)}</h2>
+        <p class="quote-sub">${sub}</p>
 
         <div class="form-row">
           <div class="form-field">
@@ -71,8 +81,8 @@ function renderQuoteDialog(p) {
           </div>
         </div>
         <div class="form-field">
-          <label class="form-label" for="qMessage">Requirements (optional)</label>
-          <textarea id="qMessage" name="message" class="form-input" maxlength="3000" placeholder="Packaging, grade, certifications, destination port, timeline…"></textarea>
+          <label class="form-label" for="qMessage">${msgLabel}</label>
+          <textarea id="qMessage" name="message" class="form-input" maxlength="3000" placeholder="${quoteEsc(msgHint)}"${p.general ? ' required' : ''}></textarea>
         </div>
 
         <!-- Honeypot: hidden from people, filled in by spam bots -->
@@ -205,7 +215,7 @@ async function submitQuote(e) {
     // Pack size is never shown to buyers; it goes to the sales team only,
     // because the catalog price range is per pack.
     unit: p.unit || '',
-    priceRange: formatPriceRange(p),
+    priceRange: p.general ? '' : formatPriceRange(p),
     qty: f.qty.value.trim(),
     qtyUnit: f.qtyUnit.value,
     name: f.name.value.trim(),
@@ -243,7 +253,9 @@ async function submitQuote(e) {
 function showQuoteDone(quoteId, data) {
   document.getElementById('quoteRef').textContent = quoteId;
   document.getElementById('quoteDoneContact').textContent = data.email || data.phone;
-  document.getElementById('quoteDoneQty').textContent = `${data.qty} ${data.qtyUnit} of ${data.product}`;
+  document.getElementById('quoteDoneQty').textContent = quoteProduct.general
+    ? `${data.qty} ${data.qtyUnit}`
+    : `${data.qty} ${data.qtyUnit} of ${data.product}`;
   document.getElementById('quoteForm').hidden = true;
   document.getElementById('quoteDone').hidden = false;
 }
