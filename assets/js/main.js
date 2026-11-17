@@ -1,5 +1,5 @@
 // 91GI — Main JavaScript
-// Handles cart, navigation, animations, and shared UI
+// Handles pricing, navigation, animations, and shared UI
 
 // ============================================
 // CURRENCY
@@ -25,204 +25,27 @@ function formatPrice(cents) {
 function priceCents(p) { return inrToCents(p.price); }
 function mrpCents(p) { return p.mrp ? inrToCents(p.mrp) : 0; }
 
-// Store policies (authored in INR, charged in USD at the same rate)
-const FREE_SHIPPING_OVER_CENTS = inrToCents(999);
-const SHIPPING_FEE_CENTS = inrToCents(79);
-const COD_FEE_CENTS = inrToCents(49);
+// Buyers request a quote, so the storefront shows an indicative range rather
+// than one fixed price: from the discounted price up to the pre-discount MRP.
+// A product without an MRP gets a range of up to 20% below its price.
+function priceRangeCents(p) {
+  const price = priceCents(p);
+  const top = p.mrp ? mrpCents(p) : price;
+  const bottom = p.mrp ? price : Math.round(price * 0.8);
+  return { low: Math.min(bottom, top), high: Math.max(bottom, top) };
+}
+
+// product → "$5.72 – $7.28"
+function formatPriceRange(p) {
+  const { low, high } = priceRangeCents(p);
+  return low === high ? formatPrice(low) : `${formatPrice(low)} – ${formatPrice(high)}`;
+}
 
 // Static HTML can show a converted amount with <span data-price-inr="999"></span>
 function hydrateStaticPrices(root = document) {
   root.querySelectorAll('[data-price-inr]').forEach(el => {
     el.textContent = formatPrice(inrToCents(Number(el.dataset.priceInr)));
   });
-}
-
-// ============================================
-// CART MANAGEMENT
-// ============================================
-const Cart = {
-  key: '91gi_cart_v1',
-
-  get() {
-    try {
-      const raw = JSON.parse(localStorage.getItem(this.key)) || [];
-      // Drop any stored line whose product no longer exists in the catalog,
-      // so the badge, drawer, cart page and checkout never desync on a phantom id.
-      const cleaned = raw.filter(i => i && i.id && typeof getProductById === 'function' && getProductById(i.id));
-      if (cleaned.length !== raw.length) {
-        localStorage.setItem(this.key, JSON.stringify(cleaned));
-      }
-      return cleaned;
-    } catch (e) {
-      return [];
-    }
-  },
-
-  save(items) {
-    localStorage.setItem(this.key, JSON.stringify(items));
-    this.updateUI();
-  },
-
-  add(productId, qty = 1) {
-    const items = this.get();
-    const existing = items.find(i => i.id === productId);
-    if (existing) {
-      existing.qty += qty;
-    } else {
-      items.push({ id: productId, qty });
-    }
-    this.save(items);
-    showToast(`Added to cart`);
-  },
-
-  remove(productId) {
-    this.save(this.get().filter(i => i.id !== productId));
-  },
-
-  updateQty(productId, qty) {
-    if (qty < 1) return this.remove(productId);
-    const items = this.get();
-    const item = items.find(i => i.id === productId);
-    if (item) {
-      item.qty = qty;
-      this.save(items);
-    }
-  },
-
-  clear() {
-    this.save([]);
-  },
-
-  getCount() {
-    return this.get().reduce((sum, item) => sum + item.qty, 0);
-  },
-
-  // All amounts below are in USD cents — render with formatPrice().
-  getSubtotal() {
-    return this.get().reduce((sum, item) => {
-      const product = getProductById(item.id);
-      return sum + (product ? priceCents(product) * item.qty : 0);
-    }, 0);
-  },
-
-  getMRPSavings() {
-    return this.get().reduce((sum, item) => {
-      const product = getProductById(item.id);
-      if (!product || !product.mrp) return sum;
-      return sum + ((mrpCents(product) - priceCents(product)) * item.qty);
-    }, 0);
-  },
-
-  getShipping() {
-    const subtotal = this.getSubtotal();
-    if (subtotal === 0) return 0;
-    return subtotal >= FREE_SHIPPING_OVER_CENTS ? 0 : SHIPPING_FEE_CENTS;
-  },
-
-  getTotal() {
-    return this.getSubtotal() + this.getShipping();
-  },
-
-  updateUI() {
-    const count = this.getCount();
-    document.querySelectorAll('.cart-badge').forEach(badge => {
-      badge.textContent = count;
-      badge.style.display = count > 0 ? 'flex' : 'none';
-    });
-    const drawer = document.getElementById('cartDrawer');
-    if (drawer) renderCartDrawer();
-    // Let the current page keep its own cart views (checkout summary, full cart page)
-    // in sync whenever the drawer edits the cart.
-    if (typeof window.onCartChange === 'function') window.onCartChange();
-  }
-};
-
-// ============================================
-// CART DRAWER
-// ============================================
-function openCart() {
-  const drawer = document.getElementById('cartDrawer');
-  const overlay = document.getElementById('cartOverlay');
-  if (drawer) {
-    drawer.classList.add('open');
-    overlay.classList.add('show');
-    document.body.style.overflow = 'hidden';
-    renderCartDrawer();
-  }
-}
-
-function closeCart() {
-  const drawer = document.getElementById('cartDrawer');
-  const overlay = document.getElementById('cartOverlay');
-  if (drawer) {
-    drawer.classList.remove('open');
-    overlay.classList.remove('show');
-    document.body.style.overflow = '';
-  }
-}
-
-function renderCartDrawer() {
-  const itemsContainer = document.getElementById('cartItems');
-  const footer = document.getElementById('cartFooter');
-  if (!itemsContainer) return;
-
-  const items = Cart.get();
-  if (items.length === 0) {
-    itemsContainer.innerHTML = `
-      <div class="cart-empty">
-        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="color: var(--mute); margin: 0 auto;">
-          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
-          <line x1="3" y1="6" x2="21" y2="6"/>
-          <path d="M16 10a4 4 0 0 1-8 0"/>
-        </svg>
-        <p>Your basket is empty</p>
-        <a href="/shop/" class="btn btn-primary btn-sm">Discover GI Products</a>
-      </div>
-    `;
-    if (footer) footer.style.display = 'none';
-    return;
-  }
-
-  if (footer) footer.style.display = 'block';
-
-  itemsContainer.innerHTML = items.map(item => {
-    const p = getProductById(item.id);
-    if (!p) return '';
-    return `
-      <div class="cart-item">
-        <div class="cart-item-img">
-          ${styledProductImage(p)}
-        </div>
-        <div class="cart-item-details">
-          <div class="cart-item-name">${p.name}</div>
-          <div class="cart-item-region">${p.region} · ${p.unit}</div>
-          <div class="cart-item-qty">
-            <button onclick="Cart.updateQty('${p.id}', ${item.qty - 1})">−</button>
-            <span class="qty-display">${item.qty}</span>
-            <button onclick="Cart.updateQty('${p.id}', ${item.qty + 1})">+</button>
-          </div>
-        </div>
-        <div>
-          <div class="cart-item-price">${formatPrice(priceCents(p) * item.qty)}</div>
-          <a class="cart-item-remove" onclick="Cart.remove('${p.id}')">Remove</a>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  document.getElementById('cartSubtotal').textContent = formatPrice(Cart.getSubtotal());
-  document.getElementById('cartShipping').textContent = Cart.getShipping() === 0 ? 'Free' : formatPrice(Cart.getShipping());
-  document.getElementById('cartTotal').textContent = formatPrice(Cart.getTotal());
-  const savings = Cart.getMRPSavings();
-  const savingsEl = document.getElementById('cartSavings');
-  if (savingsEl) {
-    if (savings > 0) {
-      savingsEl.parentElement.style.display = 'flex';
-      savingsEl.textContent = '− ' + formatPrice(savings);
-    } else {
-      savingsEl.parentElement.style.display = 'none';
-    }
-  }
 }
 
 // ============================================
@@ -368,28 +191,29 @@ function styledProductImage(p, opts = {}) {
   `;
 }
 
+// Document icon shared by every "Request a Quote" button.
+const QUOTE_ICON = `
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+    <polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+  </svg>`;
+
 function renderProductCard(p) {
-  const discount = p.mrp ? Math.round(((p.mrp - p.price) / p.mrp) * 100) : 0;
   return `
     <a href="/product/?id=${p.id}" class="product-card">
       <div class="product-card-image">
         ${p.badge ? `<span class="product-badge ${p.badge.includes('Befach') ? 'red' : p.badge.includes('Premium') ? 'gold' : ''}">${p.badge}</span>` : ''}
         ${styledProductImage(p)}
-        <span class="product-quick-add" onclick="event.preventDefault(); event.stopPropagation(); Cart.add('${p.id}'); openCart();">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-          </svg>
-          Add to Basket
+        <span class="product-quick-add" onclick="event.preventDefault(); event.stopPropagation(); location.href='/product/?id=${p.id}#quote';">
+          ${QUOTE_ICON}
+          Request Quote
         </span>
       </div>
       <div class="product-card-meta">${p.state}</div>
       <div class="product-card-title">${p.name}</div>
-      <div class="product-card-region">${p.region}${p.unit ? ' · ' + p.unit : ''}</div>
+      <div class="product-card-region">${p.region}</div>
       <div class="product-card-price">
-        <span class="price">${formatPrice(priceCents(p))}</span>
-        ${p.mrp ? `<span class="price-mrp">${formatPrice(mrpCents(p))}</span>` : ''}
-        ${discount ? `<span class="price-discount">−${discount}%</span>` : ''}
+        <span class="price">${formatPriceRange(p)}</span>
       </div>
     </a>
   `;
@@ -415,25 +239,6 @@ function renderProductGrid(products, containerSelector) {
 // ============================================
 function injectNav(activePage) {
   return `
-    <div class="top-banner">
-      <div class="top-banner-track">
-        <span>FREE SHIPPING ON ORDERS ABOVE ${formatPrice(FREE_SHIPPING_OVER_CENTS)}</span>
-        <span>·</span>
-        <span>GI-AUTHENTICATED PRODUCTS</span>
-        <span>·</span>
-        <span>SOURCED DIRECT FROM FARMERS</span>
-        <span>·</span>
-        <span>SHIPS PAN INDIA</span>
-        <span>·</span>
-        <span>FREE SHIPPING ON ORDERS ABOVE ${formatPrice(FREE_SHIPPING_OVER_CENTS)}</span>
-        <span>·</span>
-        <span>GI-AUTHENTICATED PRODUCTS</span>
-        <span>·</span>
-        <span>SOURCED DIRECT FROM FARMERS</span>
-        <span>·</span>
-        <span>SHIPS PAN INDIA</span>
-      </div>
-    </div>
     <nav class="nav">
       <div class="container">
         <div class="nav-inner">
@@ -455,13 +260,6 @@ function injectNav(activePage) {
                 <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
               </svg>
             </button>
-            <button class="nav-icon-btn" onclick="openCart()" aria-label="Cart">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
-                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
-              </svg>
-              <span class="cart-badge">0</span>
-            </button>
             <button class="mobile-toggle" onclick="toggleMobileMenu()" aria-label="Menu">
               <span></span><span></span><span></span>
             </button>
@@ -478,7 +276,6 @@ function injectNav(activePage) {
       <a href="/about/">Our Story</a>
       <a href="/gi-story/">India's GI Story</a>
       <a href="/landing/">Take the Survey</a>
-      <a href="/cart/">Basket</a>
     </aside>
   `;
 }
@@ -566,33 +363,6 @@ function injectFooter() {
   `;
 }
 
-function injectCartDrawer() {
-  return `
-    <div class="mobile-overlay" id="cartOverlay" onclick="closeCart()"></div>
-    <aside class="cart-drawer" id="cartDrawer">
-      <div class="cart-header">
-        <h3>Your Basket</h3>
-        <button class="cart-close" onclick="closeCart()" aria-label="Close">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        </button>
-      </div>
-      <div class="cart-items" id="cartItems"></div>
-      <div class="cart-footer" id="cartFooter">
-        <div class="cart-totals"><span>Subtotal</span><span id="cartSubtotal">$0.00</span></div>
-        <div class="cart-totals" style="color: var(--vermillion);"><span>You save</span><span id="cartSavings">$0.00</span></div>
-        <div class="cart-totals"><span>Shipping</span><span id="cartShipping">Free</span></div>
-        <div class="cart-totals grand"><span>Total</span><span id="cartTotal">$0.00</span></div>
-        <div class="cart-actions">
-          <a href="/cart/" class="btn btn-ghost btn-sm" style="flex:1;">View Basket</a>
-          <a href="/checkout/" class="btn btn-primary btn-sm" style="flex:1;">Checkout</a>
-        </div>
-      </div>
-    </aside>
-  `;
-}
-
 // ============================================
 // INSTANT NAVIGATION — speculative prefetch
 // Prefetches same-site pages on hover/pointer-down so they
@@ -642,16 +412,15 @@ function initPrefetch() {
 // INIT
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-  // Inject nav, footer, cart
+  // Inject nav and footer
   const navMount = document.getElementById('navMount');
   const footerMount = document.getElementById('footerMount');
   const activePage = document.body.dataset.page;
 
   if (navMount) navMount.innerHTML = injectNav(activePage);
-  if (footerMount) footerMount.innerHTML = injectFooter() + injectCartDrawer();
+  if (footerMount) footerMount.innerHTML = injectFooter();
 
   hydrateStaticPrices();
-  Cart.updateUI();
   initNavScroll();
   initReveal();
   initImageLoad();

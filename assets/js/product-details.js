@@ -441,7 +441,6 @@ function getProductDetails(product) {
     gi.appNo && ['GI Application No.', gi.appNo],
     giYear && ['GI Status Awarded', giYear],
     gi.number && ['GI Product of India', gi.number],
-    product.unit && ['Pack Size', product.unit],
     ...(d.extraInfo || []),
   ].filter(Boolean);
 

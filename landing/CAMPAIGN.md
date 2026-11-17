@@ -48,8 +48,8 @@ the concept (or audience, or price expectation) needs to change before you inves
 
 Open **`/admin/`** on the site to see everything in one place: total responses, "would buy" %,
 how many people tapped a like, total like taps, contacts captured, and a **per-product leaderboard**
-of what people want most. It reads from the same Google Sheet (set `ADMIN_KEY` in `survey-backend.gs`,
-then enter the web-app URL + key once in the dashboard). A "preview with this device's data" mode lets
+of what people want most. It reads from the same Google Sheet (set the admin password as the `ADMIN_KEY`
+script property of the Apps Script project, never in `survey-backend.gs` itself, which is public). A "preview with this device's data" mode lets
 you sanity-check it before the Sheet is connected. The `/admin/` page is `noindex` and key-gated, but
 it's not strong security — don't share the URL + key.
 
