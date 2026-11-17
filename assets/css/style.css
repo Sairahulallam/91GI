@@ -75,8 +75,7 @@ html {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Keep the banner, nav and footer fixed across the transition (no flicker) */
-.top-banner { view-transition-name: vt-banner; }
+/* Keep the nav and footer fixed across the transition (no flicker) */
 .nav { view-transition-name: vt-nav; }
 .footer { view-transition-name: vt-footer; }
 
@@ -174,31 +173,6 @@ h1, h2, h3, h4, h5, h6 {
 @media (max-width: 768px) {
   .container, .container-narrow { padding: 0 20px; }
 }
-
-/* ============================================
-   TOP BANNER
-   ============================================ */
-.top-banner {
-  background: var(--forest-deep);
-  color: var(--cream);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 10px 0;
-  text-align: center;
-  font-weight: 400;
-  position: relative;
-  overflow: hidden;
-}
-
-.top-banner-track {
-  display: flex;
-  gap: 60px;
-  white-space: nowrap;
-  animation: marquee 30s linear infinite;
-}
-
-.top-banner-track > span { flex-shrink: 0; }
 
 @keyframes marquee {
   from { transform: translateX(0); }

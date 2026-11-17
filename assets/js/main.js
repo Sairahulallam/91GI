@@ -415,25 +415,6 @@ function renderProductGrid(products, containerSelector) {
 // ============================================
 function injectNav(activePage) {
   return `
-    <div class="top-banner">
-      <div class="top-banner-track">
-        <span>FREE SHIPPING ON ORDERS ABOVE ${formatPrice(FREE_SHIPPING_OVER_CENTS)}</span>
-        <span>·</span>
-        <span>GI-AUTHENTICATED PRODUCTS</span>
-        <span>·</span>
-        <span>SOURCED DIRECT FROM FARMERS</span>
-        <span>·</span>
-        <span>SHIPS PAN INDIA</span>
-        <span>·</span>
-        <span>FREE SHIPPING ON ORDERS ABOVE ${formatPrice(FREE_SHIPPING_OVER_CENTS)}</span>
-        <span>·</span>
-        <span>GI-AUTHENTICATED PRODUCTS</span>
-        <span>·</span>
-        <span>SOURCED DIRECT FROM FARMERS</span>
-        <span>·</span>
-        <span>SHIPS PAN INDIA</span>
-      </div>
-    </div>
     <nav class="nav">
       <div class="container">
         <div class="nav-inner">
