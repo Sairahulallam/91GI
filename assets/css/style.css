@@ -240,7 +240,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav-logo img {
-  height: 68px;
+  height: 52px;
   width: auto;
 }
 
@@ -342,7 +342,7 @@ h1, h2, h3, h4, h5, h6 {
   .nav-links { display: none; }
   .mobile-toggle { display: flex; }
   .nav-inner { padding: 12px 0; }
-  .nav-logo img { height: 52px; }
+  .nav-logo img { height: 42px; }
 }
 
 /* Mobile menu */
