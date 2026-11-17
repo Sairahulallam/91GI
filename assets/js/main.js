@@ -419,7 +419,7 @@ function injectNav(activePage) {
       <div class="container">
         <div class="nav-inner">
           <a href="/" class="nav-logo">
-            <img src="/91GI_logo.png" alt="91GI — Rooted in India. Respected Globally.">
+            <img src="/befach_logo.png" alt="Befach International">
           </a>
           <div class="nav-links">
             <a href="/" class="${activePage==='home'?'active':''}">Home</a>
