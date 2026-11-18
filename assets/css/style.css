@@ -1392,7 +1392,200 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-quote-cta {
-  margin-bottom: 32px;
+  margin-bottom: 20px;
+}
+
+/* ---------- Seller box: "Sold by Befach International" ---------- */
+.seller-card {
+  background: var(--cream-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 28px;
+}
+
+.seller-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.seller-logo {
+  flex-shrink: 0;
+  width: 116px;
+  height: 64px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.seller-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.seller-id {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.seller-label {
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.seller-name {
+  font-family: var(--font-serif);
+  font-size: 20px;
+  line-height: 1.2;
+  font-weight: 500;
+  color: var(--forest-deep);
+}
+
+.seller-name:hover { color: var(--forest); text-decoration: underline; }
+
+.seller-place {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--ink);
+}
+
+.seller-flag {
+  width: 21px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--line-strong);
+}
+
+.seller-ops {
+  margin: 14px 0 0;
+  font-size: 13px;
+  color: var(--mute);
+}
+
+.seller-ops strong { color: var(--ink); font-weight: 500; }
+
+.seller-contacts {
+  list-style: none;
+  margin: 14px 0 16px;
+  padding: 14px 0 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.seller-contacts a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14.5px;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.seller-contacts a:hover { color: var(--forest); }
+
+.seller-contact-icon {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--cream-deep);
+  color: var(--forest);
+  display: grid;
+  place-items: center;
+}
+
+.seller-contact-icon svg { width: 16px; height: 16px; }
+.seller-contact-icon.is-whatsapp { background: #25D366; color: #fff; }
+
+.seller-contact-label {
+  display: block;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mute);
+  line-height: 1.4;
+}
+
+.seller-email { overflow-wrap: break-word; }
+
+.btn-contact-seller {
+  width: 100%;
+  padding: 14px 24px;
+  border: 1.5px solid var(--forest);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--forest);
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.3s var(--ease);
+}
+
+.btn-contact-seller svg { width: 18px; height: 18px; }
+
+.btn-contact-seller:hover {
+  background: var(--forest);
+  color: var(--cream);
+  transform: translateY(-1px);
+}
+
+.seller-share {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--mute);
+}
+
+.seller-share-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.seller-share-btn svg { width: 16px; height: 16px; }
+.seller-share-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+.seller-share-btn.is-whatsapp { background: #25D366; }
+.seller-share-btn.is-facebook { background: #1877F2; }
+.seller-share-btn.is-facebook svg { width: 22px; height: 22px; }
+.seller-share-btn.is-x { background: #0F1419; }
+.seller-share-btn.is-link { background: var(--mute); }
+
+.seller-copied {
+  font-size: 12.5px;
+  color: var(--forest);
+}
+
+@media (max-width: 380px) {
+  .seller-card { padding: 16px; }
+  .seller-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .seller-contacts a { font-size: 13.5px; }
 }
 
 .key-facts {
