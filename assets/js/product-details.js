@@ -1,4 +1,4 @@
-// 91GI — Product page tabs: Origin Story · Additional Info · Ingredients
+// Befach — Product page tabs: Origin Story · Additional Info · Ingredients
 //
 // Keyed by product id from products.js. Every field is optional:
 //   originStory  — full origin story (paragraphs separated by blank lines).
@@ -12,7 +12,7 @@
 //
 // GI registration facts (application no., year awarded, GI number) for the 14 products
 // that are also listed on gitagged.com were taken from those product pages (Nov 2026).
-// The origin stories for those products were written for 91GI using the same facts.
+// The origin stories for those products were written for Befach using the same facts.
 
 const PRODUCT_DETAILS = {
   // ============ BEFACH SPECIAL ============

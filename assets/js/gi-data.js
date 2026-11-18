@@ -1,5 +1,5 @@
 /* =====================================================================
-   91GI — Per-product GI registration data
+   Befach — Per-product GI registration data
    Source: Government of India GI Registry
    (search.ipindia.gov.in/GIRPublicSearch), verified 16 Nov 2026.
 

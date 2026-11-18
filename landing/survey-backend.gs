@@ -1,5 +1,5 @@
 /**
- * 91 GI — backend + stats API (Google Apps Script)
+ * Befach — backend + stats API (Google Apps Script)
  * ------------------------------------------------------------------
  * Stores what the site collects and serves it to the /admin dashboard.
  * 100% free, no server.
@@ -87,7 +87,7 @@ function doPost(e) {
 /* ---------- read (from the /admin dashboard) ---------- */
 function doGet(e) {
   const p = (e && e.parameter) || {};
-  if (!p.quotes && !p.stats) return ContentService.createTextOutput("91 GI backend is live.");
+  if (!p.quotes && !p.stats) return ContentService.createTextOutput("Befach backend is live.");
   const denied = authError(p.key);
   if (denied) return out({ ok: false, error: denied }, p.callback);
   return out(p.quotes ? listQuotes() : buildStats(), p.callback);
@@ -248,7 +248,7 @@ function notifyQuote(q) {
 
   const mail = {
     to: QUOTE_NOTIFY_EMAIL,
-    name: "91GI Quotes",
+    name: "Befach Quotes",
     subject: oneLine("New quote " + q.id + ": " + q.product + " — " + q.qty + " " + q.qtyUnit + " (" + q.country + ")"),
     body: text,
     htmlBody: html

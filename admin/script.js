@@ -1,5 +1,5 @@
 /* ===================================================================
-   91 GI — Admin
+   Befach — Admin
    Two views, switched by the tabs in the top bar (and the URL hash):
      • Quotations  (#quotes, the default) — every "Request a Quote" from
                                product pages: status, reply, delete
@@ -336,7 +336,7 @@
     const phone = String(q.phone || "");
     const dial = phone.replace(/[^\d+]/g, "");
     const wa = dial.replace(/\D/g, "");
-    const subject = "Your 91GI quote " + q.id + " — " + q.product;
+    const subject = "Your Befach quote " + q.id + " — " + q.product;
     const contact = [
       email && `<a href="mailto:${esc(email)}">${esc(email)}</a>`,
       phone && `<a href="tel:${esc(dial)}">${esc(phone)}</a>`,
