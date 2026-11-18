@@ -1,5 +1,5 @@
 /* ===================================================================
-   91 GI — idea validation (CRO pass)
+   Befach — idea validation (CRO pass)
    Signal: which products people would buy (likes) + a yes/no verdict
    + optional contact. Sent to your Sheet + Meta Pixel.
    Speed: product videos lazy-load on scroll (no 40MB upfront).

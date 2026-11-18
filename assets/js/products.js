@@ -1,4 +1,4 @@
-// 91GI Products Database — Geographical Indication Products of India
+// Befach Products Database — Geographical Indication Products of India
 // Each product carries a story of heritage, soil, hands, and history.
 
 const PRODUCTS = [

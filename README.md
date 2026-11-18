@@ -1,10 +1,10 @@
-# 91GI — Rooted in India. Respected Globally.
+# Befach — Rooted in India. Respected Globally.
 
 A premium e-commerce storefront for **India's Geographical Indication (GI) products** — 62 heritage foods from 22 states, each sourced direct from its protected region of origin. Built as a fast, dependency-free static site.
 
 > **91** = India's calling code · **GI** = Geographical Indication
 
-🌐 Domain: **91GI.com**
+🌐 Domain: **befach.com**
 
 ---
 
@@ -16,7 +16,7 @@ A premium e-commerce storefront for **India's Geographical Indication (GI) produ
 - **Full shop experience** — search, multi-filter (category + state + price), and sort
 - **Request a Quote instead of a cart** — every product shows an indicative USD price range (discounted price → MRP) and a quote form. Each request is saved to the Google Sheet behind [`landing/survey-backend.gs`](landing/survey-backend.gs), emailed to the sales team, and listed under **Quotations** in `/admin`, where its status can be tracked
 - **Befach Low Diabetic Rice** featured as a special product
-- **Premium design** — forest-green / cream / vermillion palette drawn from the 91GI logo, Playfair Display + DM Sans typography, scroll-reveal animations, responsive down to mobile
+- **Premium design** — forest-green / cream / vermillion palette drawn from the Befach logo, Playfair Display + DM Sans typography, scroll-reveal animations, responsive down to mobile
 - **Accessible & SEO-aware** — associated form labels, per-page meta descriptions, semantic markup
 
 ## 🗂️ Project Structure
@@ -33,7 +33,7 @@ Pages live in folders so every URL is clean (`/shop`, `/about`) with **no `.html
 ├── landing/survey-backend.gs  # Google Apps Script: Sheet storage, quote emails, admin API
 ├── categories/index.html  # Browse by category  →  /categories
 ├── states/index.html      # Browse by state  →  /states
-├── about/index.html       # The 91GI story  →  /about
+├── about/index.html       # The Befach story  →  /about
 ├── 91GI_logo.png          # Brand logo
 └── assets/
     ├── css/style.css      # Design system + components + page transitions
@@ -72,4 +72,4 @@ Products are defined in [`assets/js/products.js`](assets/js/products.js). Each e
 
 ---
 
-© 91GI. Built to put protected-origin Indian products — and the farmers behind them — in one honest place.
+© Befach. Built to put protected-origin Indian products — and the farmers behind them — in one honest place.

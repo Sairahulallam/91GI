@@ -1,4 +1,4 @@
-// 91GI — Main JavaScript
+// Befach — Main JavaScript
 // Handles pricing, navigation, animations, and shared UI
 
 // ============================================
@@ -186,7 +186,7 @@ function styledProductImage(p, opts = {}) {
         <div class="styled-image-divider"></div>
         <div class="styled-image-name">${p.name}</div>
       </div>
-      <div class="styled-image-tag">91GI · Origin Verified</div>
+      <div class="styled-image-tag">Befach · Origin Verified</div>
     </div>
   `;
 }
@@ -286,8 +286,8 @@ function injectFooter() {
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <h3>91GI</h3>
-            <p>Rooted in India. Respected Globally. Every product on 91GI is sourced direct from the GI region it belongs to — protected origin, unbroken authenticity, fair price for the farmer.</p>
+            <h3>Befach GI</h3>
+            <p>Rooted in India. Respected Globally. Every product on Befach GI is sourced direct from the GI region it belongs to — protected origin, unbroken authenticity, fair price for the farmer.</p>
             <div class="footer-social">
               <a href="#" aria-label="Instagram">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -341,7 +341,7 @@ function injectFooter() {
               <li><a href="#">Shipping</a></li>
               <li><a href="#">Returns</a></li>
               <li><a href="#">FAQ</a></li>
-              <li><a href="mailto:hello@91gi.com">Contact</a></li>
+              <li><a href="mailto:sanjana.nadiwade@befach.com">Contact</a></li>
             </ul>
           </div>
           <div class="footer-col">
@@ -355,8 +355,8 @@ function injectFooter() {
           </div>
         </div>
         <div class="footer-bottom">
-          <span>© ${new Date().getFullYear()} 91GI. All rights reserved.</span>
-          <span><a href="/about/">About</a> · <a href="#">Privacy</a> · <a href="#">Terms</a> · 91GI.com</span>
+          <span>© ${new Date().getFullYear()} Befach GI. All rights reserved.</span>
+          <span><a href="/about/">About</a> · <a href="#">Privacy</a> · <a href="#">Terms</a> · exports.befach.com</span>
         </div>
       </div>
     </footer>

@@ -1,4 +1,4 @@
-// 91GI — Request a Quote
+// Befach — Request a Quote
 // Buyers ask for a quote instead of buying through a cart. Each request is
 // POSTed to the Apps Script backend (landing/survey-backend.gs), which saves
 // it to the "Quotes" sheet, emails the sales team, and lists it in /admin.
