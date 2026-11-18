@@ -50,6 +50,7 @@
   <script src="/assets/js/products.js"></script>
   <script src="/assets/js/gi-data.js"></script>
   <script src="/assets/js/product-details.js"></script>
+  <script src="/assets/js/seller.js"></script>
   <script src="/assets/js/main.js"></script>
   <script src="/assets/js/quote.js"></script>
   <script>
@@ -112,6 +113,8 @@
             Request a Quote
           </button>
 
+          ${renderSellerCard(product)}
+
           <div class="key-facts">
             ${product.keyFacts.map(f => `<div class="key-fact">${f}</div>`).join('')}
           </div>
@@ -138,6 +141,7 @@
       `;
 
       initDetailTabs();
+      initSellerCard();
       initQuote(product);
 
       // Related products: same category, different product
